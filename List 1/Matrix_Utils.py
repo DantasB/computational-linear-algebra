@@ -13,7 +13,7 @@ def matrix_determinant(matrix):
     result  = 0
 
     if(number_of_rows != number_of_columns):
-        return -1
+        return "Error"
 
     if(number_of_rows == 1):
         return matrix[0][0]
@@ -110,9 +110,15 @@ def forward_substitution(matrix_l, matrix_b, control=False):
 
 def converge(matrix):
     for i in range(len(matrix)):
+        lines_summation   = 0
+        columns_summation = 0;
         for j in range(len(matrix)):
-            if (i != j and math.fabs(matrix[i][i]) <= math.fabs(matrix[i][j]) and math.fabs(matrix[i][i]) <= math.fabs(matrix[j][i])):
-                return False
+            if (i != j):
+                lines_summation+= math.fabs(matrix[i][j])
+                columns_summation+=math.fabs(matrix[j][i])
+
+        if(matrix[i][i] < lines_summation or matrix[i][i] < columns_summation):
+            return False
     return True
 
 
