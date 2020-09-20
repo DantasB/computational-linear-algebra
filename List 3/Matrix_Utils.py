@@ -201,3 +201,12 @@ def calculate_p_matrix(matrix, indexes):
     p_matrix[indexes[1]][indexes[0]] = math.sin(phi_value)
 
     return p_matrix
+
+
+def build_mmq_p_matrix(vector_x):
+    number_of_rows = len(vector_x);
+    result_matrix  = [[1 for x in range(2)] for y in range(number_of_rows)]
+    for i in range(number_of_rows):
+        result_matrix[i][1] = vector_x[i];
+
+    return result_matrix
