@@ -1,5 +1,8 @@
-import Matrix_Utils
+from importlib.machinery import SourceFileLoader
 import copy
+import math
+
+Matrix_Utils = SourceFileLoader("Matrix_Utils", "/home/bdantas/Área de Trabalho/ALC_Lists/Utils/Matrix_Utils.py").load_module()
 
 def lu_decomposition(matrix):
     if(Matrix_Utils.matrix_determinant(matrix) == 0):
@@ -31,7 +34,7 @@ def cholesky_decomposition(matrix):
     if(number_of_rows != number_of_columns):
         return "Error"
 
-    #Check if the matrix is simetric, if not, return -1
+    #Check if the matrix is simetric, if not, return Error
     if(not Matrix_Utils.positive_definite(matrix)):
         return "Error"
 
@@ -51,18 +54,16 @@ def cholesky_decomposition(matrix):
     return l
 
 
-def solve_by_lu_decomposition(matrix_a, matrix_b):
+def solve_matrix(matrix_a, matrix_b, use_cholesky):
     matrix_lu = copy.deepcopy(matrix_a)
-    matrix_lu = lu_decomposition(matrix_lu)
-    if(matrix_lu == "Error"):
-        return "Error"
+    if(not use_cholesky):
+        matrix_lu = lu_decomposition(matrix_lu)
+        if(matrix_lu == "Error"):
+            return "Error"
 
-    matrix_y = Matrix_Utils.forward_substitution_(matrix_lu, matrix_b)
-    return Matrix_Utils.backward_substitution(matrix_lu, matrix_y)
+        matrix_y = Matrix_Utils.forward_substitution(matrix_lu, matrix_b)
+        return Matrix_Utils.backward_substitution(matrix_lu, matrix_y)
 
-
-def solve_by_cholesky_decomposition(matrix_a, matrix_b):
-    matrix_lu = copy.deepcopy(matrix_a)
     matrix_lu = cholesky_decomposition(matrix_lu)
     if(matrix_lu == "Error"):
         return "Error"
@@ -80,7 +81,7 @@ def iterative_jacobi(matrix_a, matrix_b):
     solution_zero = [0.0 for i in range(n)]
     next_solution = [0.0 for i in range(n)]
 
-    tol      = 10**(-3)
+    tol      = 10**(-5)
     residue  = 1
     step     = 0
 
@@ -112,7 +113,7 @@ def iterative_jacobi(matrix_a, matrix_b):
     print("residue: "         , residue      )
     print("iteration_number: ", step         )
 
-    
+
 def gauss_seidel(matrix_a, matrix_b):
     if (not Matrix_Utils.converge(matrix_a)):
         return "Error"
@@ -122,7 +123,7 @@ def gauss_seidel(matrix_a, matrix_b):
     solution_zero = [1.0 for i in range(n)]
     next_solution = [0.0 for i in range(n)]
 
-    tol     = 10**(-3)
+    tol     = 10**(-5)
     residue = 1
     step    = 0
 
@@ -138,15 +139,13 @@ def gauss_seidel(matrix_a, matrix_b):
             next_solution[j] = (matrix_b[j] - first_summation - second_summation)/matrix_a[j][j]
 
         for z in range(n):
-            numerator   += (next_solution[z]-solution_zero[z])**2
+            numerator   += (next_solution[z] - solution_zero[z])**2
             denominator += next_solution[z]**2
 
         residue = float(numerator**0.5)/(denominator**0.5)
 
         for i in range(len(next_solution)):
             solution_zero[i] = next_solution[i]
-
-        print(next_solution, residue)
 
         step += 1
 
