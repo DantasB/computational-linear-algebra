@@ -1,5 +1,159 @@
 import copy
 import math
+import random
+
+def initial_kick(n):
+    result = [random.uniform(-1, 1) for _ in range(n)]
+    print("Initial kick: "+ str(result))
+    return result
+
+
+def step_forward_derivate(function, x, delta):
+    numerator   = function(x + delta) - function(x)
+    denominator = delta
+    result      = numerator/denominator
+
+    return result
+
+
+def step_backward_derivate(function, x, delta):
+    numerator   = function(x) - function(x - delta)
+    denominator = delta
+    result      = numerator/denominator
+
+    return result
+
+
+def central_derivate(function, x, delta):
+    numerator   = function(x + delta) - function(x - delta)
+    denominator = 2*delta
+    result      = numerator/denominator
+
+    return result
+
+
+def get_jacobian_matrix(functions_list, first_solution):
+    first_dimention  = len(functions_list)
+    second_dimention = len(first_solution)
+
+    result = [[0 for _ in range(second_dimention)] for _ in range(first_dimention)]
+
+    for i in range(first_dimention):
+        for j in range(second_dimention):
+            result[i][j] = partial_derivate(functions_list[i], first_solution, j)
+    return result
+
+
+def partial_derivate(multiple_variables_function, first_solution, derivate_index):
+    delta = 10**(-10)
+    aux   = multiple_variables_function(first_solution)
+
+    new_solution                 = first_solution[:]
+    new_solution[derivate_index] += delta
+
+    numerator    = multiple_variables_function(new_solution) - aux
+    denominator  = delta
+    result       = numerator/denominator
+
+    return result
+
+
+def get_f_vector(functions_list, first_solution):
+    dimension = len(functions_list)
+    result    = [0 for _ in range(dimension)]
+
+    for i in range(dimension):
+        result[i] = functions_list[i](first_solution)
+
+    return result
+
+
+def vector_norm(vector):
+    dimension = len(vector)
+    result    = 0
+
+    for i in range(dimension):
+        result += vector[i] * vector[i]
+
+    return result**(0.5)
+
+
+def inverse_interpolation_helper(x1, x2, x3, y1, y2, y3):
+    a = (y2*y3*x1) / ((y1 - y2)*(y1 - y3))
+    b = (y1*y3*x2) / ((y2 - y1)*(y2 - y3))
+    c = (y1*y2*x3) / ((y3 - y1)*(y3 - y2))
+    return a + b + c
+
+
+def derivate(function, value):
+    delta       = 10**(-10)
+    numerator   = function(value + delta) - function(value)
+    denominator = delta
+    result      = numerator/denominator
+
+    return result
+
+
+def get_inverse_matrix(matrix):
+    cofactors   = []
+    determinant = matrix_determinant(matrix)
+    if(determinant == 0):
+        return 0
+
+    for r in range(len(matrix)):
+        cofactorRow = []
+
+        for c in range(len(matrix)):
+            minor = inverse_auxiliar_function(matrix,r,c)
+            cofactorRow.append(((-1)**(r+c)) * matrix_determinant(minor))
+
+        cofactors.append(cofactorRow)
+
+    cofactors = get_transposed_matrix(cofactors)
+
+    for r in range(len(cofactors)):
+        for c in range(len(cofactors)):
+
+            cofactors[r][c] = cofactors[r][c]/determinant
+
+    return cofactors
+
+
+def inverse_auxiliar_function(matrix, i, j):
+    return [row[:j] + row[j+1:] for row in (matrix[:i]+matrix[i+1:])]
+
+
+def sum_vectors(vector_a , vector_b):
+    dimension = len(vector_a)
+    result    = [0 for i in range(dimension)]
+
+    for i in range(dimension):
+        result[i] = vector_a[i] + vector_b[i]
+
+    return result
+
+
+def sum_matrixes(matriz_a, matriz_b):
+    dimension = len(matriz_a)
+    result    = [[0 for i in range(dimension)] for j in range(dimension)]
+
+    for i in range(dimension):
+        for j in range(dimension):
+            result[i][j] = matriz_a[i][j] + matriz_b[i][j]
+
+    return result
+
+
+def broyden_method_helper(vector_a, vector_b):
+    dimension = len(vector_a)
+    result    = [[0 for i in range(dimension)] for j in range(dimension)]
+
+    for i in range(dimension):
+        for j in range(dimension):
+            result[i][j] = vector_a[i]*vector_b[j]
+
+    return result
+
 
 def get_biggest_element(matrix_a):
     number_of_rows = len(matrix_a)
@@ -24,6 +178,17 @@ def multiply_matrix_vector(matrix_a, vector):
             summation += matrix_a[j][i]*vector[i]
 
         result[j] = summation
+
+    return result
+
+
+def multiply_matrix_scalar(matrix_a, scalar):
+    n      = len(matrix_a)
+    result = [[0.0 for _ in range(n)] for _ in range(n)]
+
+    for j in range(n):
+        for i in range(n):
+            result[i][j] = matrix_a[i][j] * scalar
 
     return result
 
@@ -162,15 +327,15 @@ def converge(matrix):
     return True
 
 
-def sum_of_vector_multiplication(matrix_a, matrix_b):
-    summation = 0
+def vector_multiplication(vector_a, vector_b):
+    result = 0
 
-    for i in range(len(matrix_a)):
-        for j in range(len(matrix_b)):
+    for i in range(len(vector_a)):
+        for j in range(len(vector_b)):
             if (i==j):
-                summation += matrix_a[i]*matrix_b[i]
+                result += vector_a[i]*vector_b[i]
 
-    return summation
+    return result
 
 
 def get_transposed_matrix(matrix):
@@ -208,7 +373,6 @@ def calculate_p_matrix(matrix, indexes):
     p_matrix[indexes[1]][indexes[0]] = math.sin(phi_value)
 
     return p_matrix
-
 
 
 def build_mmq_p_matrix(vector_x):
