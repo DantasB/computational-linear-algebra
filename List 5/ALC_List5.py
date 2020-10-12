@@ -1,8 +1,8 @@
 from importlib.machinery import SourceFileLoader
 import math
 
-Matrix_Utils = SourceFileLoader("Matrix_Utils", "/home/bdantas/Área de Trabalho/UFRJ/ALC/Utils/Matrix_Utils.py").load_module()
-ALC_List1    = SourceFileLoader("ALC_List1", "/home/bdantas/Área de Trabalho/UFRJ/ALC/List_1/ALC_List1.py").load_module()
+Matrix_Utils = SourceFileLoader("Matrix_Utils", "/home/bdantas/Área de Trabalho/ALC_Lists/Utils/Matrix_Utils.py").load_module()
+ALC_List1    = SourceFileLoader("ALC_List1", "/home/bdantas/Área de Trabalho/ALC_Lists/List_1/ALC_List1.py").load_module()
 
 
 Weight_Legendre = {2:{"points": [-0.5773502691896257,0.5773502691896257],"weight": [1.0,1.0]},
