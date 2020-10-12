@@ -1,7 +1,7 @@
 from importlib.machinery import SourceFileLoader
 import math
 
-Matrix_Utils = SourceFileLoader("Matrix_Utils", "/home/bdantas/Área de Trabalho/UFRJ/ALC/Utils/Matrix_Utils.py").load_module()
+Matrix_Utils = SourceFileLoader("Matrix_Utils", "/home/bdantas/Área de Trabalho/ALC_Lists/Utils/Matrix_Utils.py").load_module()
 STEPS        = 100
 TOL          = 10**-4
 
