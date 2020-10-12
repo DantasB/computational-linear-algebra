@@ -131,8 +131,10 @@ def estimate_integral_value(function,a,b):
     error     = (trapeze - mid_point)/3
     simpson   = (function(a) + (4 * function(m)) + function(b))*((b-a)/6.0)
 
-    mid_point_integral_value = mid_point + error
-    trapeze_integral_value   = trapeze - 2*error
+    #mid_point_integral_value = mid_point + error
+    #trapeze_integral_value   = trapeze - 2 * error
+    mid_point_integral_value = mid_point
+    trapeze_integral_value   = trapeze
     simpson_integral_value   = simpson
 
     print("Integral Mid Point: " + str(mid_point_integral_value))
