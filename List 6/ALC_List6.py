@@ -2,7 +2,7 @@ from importlib.machinery import SourceFileLoader
 import matplotlib.pyplot as plt
 import math
 
-Matrix_Utils = SourceFileLoader("Matrix_Utils", "/home/bdantas/Área de Trabalho/UFRJ/ALC/Utils/Matrix_Utils.py").load_module()
+Matrix_Utils = SourceFileLoader("Matrix_Utils", "/home/bdantas/Área de Trabalho/ALC_Lists/Utils/Matrix_Utils.py").load_module()
 
 def first_order_edo_solver(diferential_function, t0, tf, delta, start_condition, control):
     x_incognita = [start_condition]
