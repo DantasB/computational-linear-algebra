@@ -1,6 +1,6 @@
 # Algebra-Linear-Computacional
 
-A simple library constructed using Python 3 and some other libraries made by Bruno Dantas
+A simple library constructed using Python 3 and some other libraries made by Bruno Dantas.
 
 ## Table of Contents:
 - [How to use](#how-to-use)
