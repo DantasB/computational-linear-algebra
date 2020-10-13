@@ -33,13 +33,13 @@ def central_derivate(function, x, delta):
 
 
 def get_jacobian_matrix(functions_list, first_solution):
-    first_dimention  = len(functions_list)
-    second_dimention = len(first_solution)
+    first_dimension  = len(functions_list)
+    second_dimension = len(first_solution)
 
-    result = [[0 for _ in range(second_dimention)] for _ in range(first_dimention)]
+    result = [[0 for _ in range(second_dimension)] for _ in range(first_dimension)]
 
-    for i in range(first_dimention):
-        for j in range(second_dimention):
+    for i in range(first_dimension):
+        for j in range(second_dimension):
             result[i][j] = partial_derivate(functions_list[i], first_solution, j)
     return result
 
