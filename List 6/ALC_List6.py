@@ -68,7 +68,7 @@ def second_order_edo_solver(second_order_diferential_function, t0, tf, delta, x0
             x_incognita.append(x_incognita[i] + delta*(x_actual_line + (K1 + K2 + K3) / 3))
             x_actual_line = x_actual_line + (K1 + 2 * K2 + 2 * K3 + K4) / 3
 
-    plt.plot(x_incognita, t_incognita)
-    plt.ylabel('T')
-    plt.xlabel('y\'\'(t)')
+    plt.plot(t_incognita, x_incognita)
+    plt.ylabel('y\'\'(t)')
+    plt.xlabel('T')
     plt.show()
