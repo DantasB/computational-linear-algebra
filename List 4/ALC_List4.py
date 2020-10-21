@@ -1,7 +1,7 @@
 from importlib.machinery import SourceFileLoader
 import math
 
-Matrix_Utils = SourceFileLoader("Matrix_Utils", "/home/bdantas/Área de Trabalho/ALC_Lists/Utils/Matrix_Utils.py").load_module()
+Matrix_Utils = SourceFileLoader("Matrix_Utils", "/home/bdantas/Documentos/Repos/Algebra-Linear-Computacional/Utils/Matrix_Utils.py").load_module()
 STEPS        = 100
 TOL          = 10**-4
 
@@ -65,14 +65,9 @@ def secant_method(function, x0):
 
 
 def inverse_interpolation_method(function, x1, x2, x3):
-    x0       = 10**(36)
-
-    y1        = function(x1)
-    y2        = function(x2)
-    y3        = function(x3)
-
-    x         = [x1, x2, x3]
-    y         = [y1, y2, y3]
+    x0 = 10**(36)
+    x  = [x1,x2,x3]
+    y  = [function(x1), function(x2), function(x3)]
 
     for i in range(STEPS):
         xi      = Matrix_Utils.inverse_interpolation_helper(x[0], x[1], x[2], y[0], y[1], y[2])
@@ -82,14 +77,29 @@ def inverse_interpolation_method(function, x1, x2, x3):
             print("Root: " + str(xi))
             return
 
-        y_max = max(y)
-        i     = y.index(y_max)
-        x[i]  = xi
-        y[i]  = function(xi)
-        x0    = xi
+        x0 = xi
 
-        y.sort()
-        x.sort()
+        y_max = max(y)
+        if(y_max == y[0]):
+            x1 = x0;
+            x  = [x1, x2, x3]
+            x.sort()
+            y = [function(x[0]), function(x[1]), function(x[2])]
+            continue;
+
+        elif(y_max == y[0]):
+            x2 = x0;
+            x  = [x1, x2, x3]
+            x.sort()
+            y = [function(x[0]), function(x[1]), function(x[2])]
+            continue;
+
+        else:
+            x3 = x0;
+            x  = [x1, x2, x3]
+            x.sort()
+            y = [function(x[0]), function(x[1]), function(x[2])]
+            continue;
 
     print("Convergence not reached")
 
@@ -165,7 +175,7 @@ def broyden_method(functions_list, first_solution):
     print("Convergence not reached")
 
 
-def non_linear_mmq(functions_list, vector_x, vector_y, first_solution):
+def non_linear_mmq(functions_list, first_solution):
     x = first_solution
 
     for i in range (STEPS):

@@ -2,7 +2,7 @@ from importlib.machinery import SourceFileLoader
 import copy
 import math
 
-Matrix_Utils = SourceFileLoader("Matrix_Utils", "/home/bdantas/Área de Trabalho/ALC_Lists/Utils/Matrix_Utils.py").load_module()
+Matrix_Utils = SourceFileLoader("Matrix_Utils", "/home/bdantas/Documentos/Repos/Algebra-Linear-Computacional/Utils/Matrix_Utils.py").load_module()
 
 def lu_decomposition(matrix):
     if(Matrix_Utils.matrix_determinant(matrix) == 0):

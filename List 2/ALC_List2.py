@@ -1,7 +1,7 @@
 import math
 from importlib.machinery import SourceFileLoader
 
-Matrix_Utils = SourceFileLoader("Matrix_Utils", "/home/bdantas/Área de Trabalho/ALC_Lists/Utils/Matrix_Utils.py").load_module()
+Matrix_Utils = SourceFileLoader("Matrix_Utils", "/home/bdantas/Documentos/Repos/Algebra-Linear-Computacional/Utils/Matrix_Utils.py").load_module()
 
 def power_method(matrix):
     number_of_rows = len(matrix)
