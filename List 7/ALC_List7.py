@@ -2,7 +2,7 @@ from importlib.machinery import SourceFileLoader
 
 import math
 
-Matrix_Utils = SourceFileLoader("Matrix_Utils", "/home/bdantas/Área de Trabalho/ALC_Lists/Utils/Matrix_Utils.py").load_module()
+Matrix_Utils = SourceFileLoader("Matrix_Utils", "/home/bdantas/Documentos/Repos/Algebra-Linear-Computacional/Utils/Matrix_Utils.py").load_module()
 
 
 def forward_richard_extrapolation_derivate(function, x, delta, p):
