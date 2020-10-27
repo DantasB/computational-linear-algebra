@@ -62,7 +62,7 @@ def integrate(function, a, b, number_of_points, polinomial_integration = True):
         if(b == "inf"):
             print("Integral: " + str(hermite_sum))
             return
-        elif(b >=0):
+        elif(b >= 0):
             result = hermite_sum - laguerre_sum + numeric_integration(function, 0, b, number_of_points, False)
         else:
             result = hermite_sum - numeric_integration(function, b, 0, number_of_points, False) - laguerre_sum
