@@ -1,4 +1,4 @@
-# Algebra-Linear-Computacional
+# Computational-Linear-Algebra
 
 A simple library constructed using Python 3 and some other libraries made by Bruno Dantas.
 
