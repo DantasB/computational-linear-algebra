@@ -13,7 +13,7 @@ A simple library constructed using Python 3 and some other libraries made by Bru
 You will need to install all the [requirements.txt](https://github.com/DantasB/Algebra-Linear-Computacional/blob/master/requirements.txt) and run the [main.py](https://github.com/DantasB/Algebra-Linear-Computacional/blob/master/main.py) python program.
 
 ## Matrix utils
-The [matrix_utils.py](https://github.com/DantasB/Algebra-Linear-Computacional/blob/master/utils/matrix_utils.py) library was created with all the secondary functions needed to run properly the functions. It contains base matrix functions, derivate functions, and another necessary secondary routines.
+The [matrix_utils.py](https://github.com/DantasB/Algebra-Linear-Computacional/blob/master/src/utils/matrix_utils.py) library was created with all the secondary functions needed to run properly the functions. It contains base matrix functions, derivate functions, and another necessary secondary routines.
 
 ## Functions
 Below you can see all the functions covered by this library:
