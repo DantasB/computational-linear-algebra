@@ -2,65 +2,68 @@ import copy
 import math
 import random
 
-def initial_kick(n):
+
+def initial_guess(n):
     result = [random.uniform(-1, 1) for _ in range(n)]
-    print("Initial kick: "+ str(result))
+    print("Initial guess: " + str(result))
     return result
 
 
 def step_forward_derivate(function, x, delta):
-    numerator   = function(x + delta) - function(x)
+    numerator = function(x + delta) - function(x)
     denominator = delta
-    result      = numerator/denominator
+    result = numerator/denominator
 
     return result
 
 
 def step_backward_derivate(function, x, delta):
-    numerator   = function(x) - function(x - delta)
+    numerator = function(x) - function(x - delta)
     denominator = delta
-    result      = numerator/denominator
+    result = numerator/denominator
 
     return result
 
 
 def central_derivate(function, x, delta):
-    numerator   = function(x + delta) - function(x - delta)
+    numerator = function(x + delta) - function(x - delta)
     denominator = 2*delta
-    result      = numerator/denominator
+    result = numerator/denominator
 
     return result
 
 
 def get_jacobian_matrix(functions_list, first_solution):
-    first_dimension  = len(functions_list)
+    first_dimension = len(functions_list)
     second_dimension = len(first_solution)
 
-    result = [[0 for _ in range(second_dimension)] for _ in range(first_dimension)]
+    result = [[0 for _ in range(second_dimension)]
+              for _ in range(first_dimension)]
 
     for i in range(first_dimension):
         for j in range(second_dimension):
-            result[i][j] = partial_derivate(functions_list[i], first_solution, j)
+            result[i][j] = partial_derivate(
+                functions_list[i], first_solution, j)
     return result
 
 
 def partial_derivate(multiple_variables_function, first_solution, derivate_index):
     delta = 10**(-10)
-    aux   = multiple_variables_function(first_solution)
+    aux = multiple_variables_function(first_solution)
 
-    new_solution                 = first_solution[:]
+    new_solution = first_solution[:]
     new_solution[derivate_index] += delta
 
-    numerator    = multiple_variables_function(new_solution) - aux
-    denominator  = delta
-    result       = numerator/denominator
+    numerator = multiple_variables_function(new_solution) - aux
+    denominator = delta
+    result = numerator/denominator
 
     return result
 
 
 def get_f_vector(functions_list, first_solution):
     dimension = len(functions_list)
-    result    = [0 for _ in range(dimension)]
+    result = [0 for _ in range(dimension)]
 
     for i in range(dimension):
         result[i] = functions_list[i](first_solution)
@@ -70,7 +73,7 @@ def get_f_vector(functions_list, first_solution):
 
 def vector_norm(vector):
     dimension = len(vector)
-    result    = 0
+    result = 0
 
     for i in range(dimension):
         result += vector[i] * vector[i]
@@ -86,16 +89,16 @@ def inverse_interpolation_helper(x1, x2, x3, y1, y2, y3):
 
 
 def derivate(function, value):
-    delta       = 10**(-10)
-    numerator   = function(value + delta) - function(value)
+    delta = 10**(-10)
+    numerator = function(value + delta) - function(value)
     denominator = delta
-    result      = numerator/denominator
+    result = numerator/denominator
 
     return result
 
 
 def get_inverse_matrix(matrix):
-    cofactors   = []
+    cofactors = []
     determinant = matrix_determinant(matrix)
     if(determinant == 0):
         return 0
@@ -104,7 +107,7 @@ def get_inverse_matrix(matrix):
         cofactorRow = []
 
         for c in range(len(matrix)):
-            minor = inverse_auxiliar_function(matrix,r,c)
+            minor = inverse_auxiliar_function(matrix, r, c)
             cofactorRow.append(((-1)**(r+c)) * matrix_determinant(minor))
 
         cofactors.append(cofactorRow)
@@ -123,9 +126,9 @@ def inverse_auxiliar_function(matrix, i, j):
     return [row[:j] + row[j+1:] for row in (matrix[:i]+matrix[i+1:])]
 
 
-def sum_vectors(vector_a , vector_b):
+def sum_vectors(vector_a, vector_b):
     dimension = len(vector_a)
-    result    = [0 for i in range(dimension)]
+    result = [0 for i in range(dimension)]
 
     for i in range(dimension):
         result[i] = vector_a[i] + vector_b[i]
@@ -135,7 +138,7 @@ def sum_vectors(vector_a , vector_b):
 
 def sum_matrixes(matriz_a, matriz_b):
     dimension = len(matriz_a)
-    result    = [[0 for i in range(dimension)] for j in range(dimension)]
+    result = [[0 for i in range(dimension)] for j in range(dimension)]
 
     for i in range(dimension):
         for j in range(dimension):
@@ -146,7 +149,7 @@ def sum_matrixes(matriz_a, matriz_b):
 
 def broyden_method_helper(vector_a, vector_b):
     dimension = len(vector_a)
-    result    = [[0 for i in range(dimension)] for j in range(dimension)]
+    result = [[0 for i in range(dimension)] for j in range(dimension)]
 
     for i in range(dimension):
         for j in range(dimension):
@@ -157,19 +160,19 @@ def broyden_method_helper(vector_a, vector_b):
 
 def get_biggest_element(matrix_a):
     number_of_rows = len(matrix_a)
-    biggest_value  = -math.inf
+    biggest_value = -math.inf
     for i in range(number_of_rows):
         for j in range(number_of_rows):
             if (i != j and math.fabs(matrix_a[i][j]) > biggest_value):
                 biggest_value = math.fabs(matrix_a[i][j])
-                index         = (i, j)
+                index = (i, j)
     return index
 
 
 def multiply_matrix_vector(matrix_a, vector):
-    number_of_columns_of_a      = len(matrix_a)
+    number_of_columns_of_a = len(matrix_a)
     number_of_columns_of_vector = range(len(vector))
-    result                      = [0.0 for _ in range(number_of_columns_of_a)]
+    result = [0.0 for _ in range(number_of_columns_of_a)]
 
     for j in range(number_of_columns_of_a):
         summation = 0
@@ -183,7 +186,7 @@ def multiply_matrix_vector(matrix_a, vector):
 
 
 def multiply_matrix_scalar(matrix_a, scalar):
-    n      = len(matrix_a)
+    n = len(matrix_a)
     result = [[0.0 for _ in range(n)] for _ in range(n)]
 
     for j in range(n):
@@ -195,7 +198,8 @@ def multiply_matrix_scalar(matrix_a, scalar):
 
 def multiply_matrixes(matrix_a, matrix_b):
     number_of_rows = len(matrix_a)
-    result = [[0.0 for _ in range(number_of_rows)] for _ in range(number_of_rows)]
+    result = [[0.0 for _ in range(number_of_rows)]
+              for _ in range(number_of_rows)]
     for i in range(len(matrix_a)):
         for j in range(len(matrix_b[0])):
             for k in range(len(matrix_b)):
@@ -204,16 +208,17 @@ def multiply_matrixes(matrix_a, matrix_b):
 
 
 def display_matrix(matrix):
-    print('\n'.join([''.join(['{:4}'.format(item) for item in row]) for row in matrix]))
+    print('\n'.join([''.join(['{:4}'.format(item)
+          for item in row]) for row in matrix]))
 
     print('\n')
 
 
 def matrix_determinant(matrix):
-    number_of_rows    = len(matrix)
+    number_of_rows = len(matrix)
     number_of_columns = len(matrix[0])
 
-    result  = 0
+    result = 0
 
     if(number_of_rows != number_of_columns):
         return "Não é possível calcular a determinante de uma matriz não quadrada"
@@ -222,7 +227,8 @@ def matrix_determinant(matrix):
         return matrix[0][0]
 
     for k in range(number_of_rows):
-        result += matrix[k][0]*((-1)**k)*matrix_determinant(get_auxiliar_matrix(matrix, k))
+        result += matrix[k][0]*((-1)**k) * \
+            matrix_determinant(get_auxiliar_matrix(matrix, k))
 
     return result
 
@@ -246,7 +252,7 @@ def positive_definite(matrix):
 
 
 def check_simetry(matrix):
-    number_of_rows    = len(matrix)
+    number_of_rows = len(matrix)
     number_of_columns = len(matrix[0])
 
     if(number_of_rows != number_of_columns):
@@ -254,7 +260,7 @@ def check_simetry(matrix):
 
     for i in range(len(matrix)):
         for j in range(len(matrix[i])):
-            if(matrix[i][j]!= matrix[j][i]):
+            if(matrix[i][j] != matrix[j][i]):
                 return False
 
     return True
@@ -270,15 +276,17 @@ def sylvesters_criterion(matrix):
 
 
 def get_main_minor(matrix, index):
-    result = [[matrix[row][column] for row in range(index + 1)] for column in range(index + 1)]
+    result = [[matrix[row][column]
+               for row in range(index + 1)] for column in range(index + 1)]
     return result
 
 
 def backward_substitution(matrix_u, matrix_y):
     number_of_rows = len(matrix_u)
-    matrix_x       = [0 for i in range(number_of_rows)]
+    matrix_x = [0 for i in range(number_of_rows)]
 
-    matrix_x[number_of_rows-1]= matrix_y[number_of_rows-1]/matrix_u[number_of_rows-1][number_of_rows-1]
+    matrix_x[number_of_rows-1] = matrix_y[number_of_rows-1] / \
+        matrix_u[number_of_rows-1][number_of_rows-1]
 
     for i in range(number_of_rows-2, -1, -1):
         summation = matrix_y[i]
@@ -314,11 +322,11 @@ def forward_substitution(matrix_l, matrix_b, control=False):
 
 def converge(matrix):
     for i in range(len(matrix)):
-        lines_summation   = 0
-        columns_summation = 0;
+        lines_summation = 0
+        columns_summation = 0
         for j in range(len(matrix)):
             if (i != j):
-                lines_summation   += math.fabs(matrix[i][j])
+                lines_summation += math.fabs(matrix[i][j])
                 columns_summation += math.fabs(matrix[j][i])
 
         if(matrix[i][i] < lines_summation or matrix[i][i] < columns_summation):
@@ -332,7 +340,7 @@ def vector_multiplication(vector_a, vector_b):
 
     for i in range(len(vector_a)):
         for j in range(len(vector_b)):
-            if (i==j):
+            if (i == j):
                 result += vector_a[i]*vector_b[i]
 
     return result
@@ -349,7 +357,8 @@ def get_transposed_matrix(matrix):
 
 
 def phi(matrix, indexes):
-    denominator = (matrix[indexes[0]][indexes[0]] - matrix[indexes[1]][indexes[1]])
+    denominator = (matrix[indexes[0]][indexes[0]] -
+                   matrix[indexes[1]][indexes[1]])
 
     if(matrix[indexes[0]][indexes[0]] == matrix[indexes[1]][indexes[1]]):
         return math.pi/4
@@ -359,9 +368,10 @@ def phi(matrix, indexes):
 
 def calculate_p_matrix(matrix, indexes):
     number_of_rows = len(matrix)
-    phi_value      = 0
+    phi_value = 0
 
-    p_matrix = [[0.0 for _ in range(number_of_rows)] for _ in range(number_of_rows)]
+    p_matrix = [[0.0 for _ in range(number_of_rows)]
+                for _ in range(number_of_rows)]
     for i in range(number_of_rows):
         p_matrix[i][i] = 1.0
 
@@ -376,9 +386,9 @@ def calculate_p_matrix(matrix, indexes):
 
 
 def build_mmq_p_matrix(vector_x):
-    number_of_rows = len(vector_x);
-    result_matrix  = [[1 for x in range(2)] for y in range(number_of_rows)]
+    number_of_rows = len(vector_x)
+    result_matrix = [[1 for x in range(2)] for y in range(number_of_rows)]
     for i in range(number_of_rows):
-        result_matrix[i][1] = vector_x[i];
+        result_matrix[i][1] = vector_x[i]
 
     return result_matrix

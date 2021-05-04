@@ -1,14 +1,13 @@
-from importlib.machinery import SourceFileLoader
 import copy
 import math
+from src.utils.matrix_utils import vector_multiplication, converge, matrix_determinant, positive_definite, forward_substitution, backward_substitution, get_transposed_matrix
 
-Matrix_Utils = SourceFileLoader("Matrix_Utils", "/home/bdantas/Documentos/Repos/Algebra-Linear-Computacional/Utils/Matrix_Utils.py").load_module()
 
 def lu_decomposition(matrix):
-    if(Matrix_Utils.matrix_determinant(matrix) == 0):
+    if(matrix_determinant(matrix) == 0):
         return "Error"
 
-    number_of_rows    = len(matrix)
+    number_of_rows = len(matrix)
     number_of_columns = len(matrix[0])
 
     if(number_of_rows != number_of_columns):
@@ -28,14 +27,14 @@ def lu_decomposition(matrix):
 
 
 def cholesky_decomposition(matrix):
-    number_of_rows    = len(matrix)
+    number_of_rows = len(matrix)
     number_of_columns = len(matrix[0])
 
     if(number_of_rows != number_of_columns):
         return "Error"
 
-    #Check if the matrix is simetric, if not, return Error
-    if(not Matrix_Utils.positive_definite(matrix)):
+    # Check if the matrix is simetric, if not, return Error
+    if(not positive_definite(matrix)):
         return "Error"
 
     l = [[0.0] * len(matrix) for _ in range(len(matrix))]
@@ -43,13 +42,13 @@ def cholesky_decomposition(matrix):
     for i in range(len(matrix)):
         for j in range(i + 1):
 
-            if(i==j):
+            if(i == j):
                 summation = sum(l[i][k]**2 for k in range(i))
-                l[i][i]   = (matrix[i][i]-summation)**0.5
-                continue;
+                l[i][i] = (matrix[i][i]-summation)**0.5
+                continue
 
             summation = sum(l[i][k]*l[j][k] for k in range(i))
-            l[i][j]   = (1.0/l[j][j])*(matrix[i][j]-summation)
+            l[i][j] = (1.0/l[j][j])*(matrix[i][j]-summation)
 
     return l
 
@@ -61,19 +60,19 @@ def solve_matrix(matrix_a, matrix_b, use_cholesky):
         if(matrix_lu == "Error"):
             return "Error"
 
-        matrix_y = Matrix_Utils.forward_substitution(matrix_lu, matrix_b)
-        return Matrix_Utils.backward_substitution(matrix_lu, matrix_y)
+        matrix_y = forward_substitution(matrix_lu, matrix_b)
+        return backward_substitution(matrix_lu, matrix_y)
 
     matrix_lu = cholesky_decomposition(matrix_lu)
     if(matrix_lu == "Error"):
         return "Error"
 
-    matrix_y = Matrix_Utils.forward_substitution(matrix_lu, matrix_b, True)
-    return Matrix_Utils.backward_substitution(Matrix_Utils.get_transposed_matrix(matrix_lu), matrix_y)
+    matrix_y = forward_substitution(matrix_lu, matrix_b, True)
+    return backward_substitution(get_transposed_matrix(matrix_lu), matrix_y)
 
 
 def iterative_jacobi(matrix_a, matrix_b):
-    if (not Matrix_Utils.converge(matrix_a)):
+    if (not converge(matrix_a)):
         return "Error"
 
     n = len(matrix_a)
@@ -81,41 +80,42 @@ def iterative_jacobi(matrix_a, matrix_b):
     solution_zero = [0.0 for i in range(n)]
     next_solution = [0.0 for i in range(n)]
 
-    tol      = 10**(-5)
-    residue  = 1
-    step     = 0
+    tol = 10**(-5)
+    residue = 1
+    step = 0
 
     while (residue > tol):
 
-        numerator   = 0
+        numerator = 0
         denominator = 0
 
         for j in range(n):
             next_solution[j] = matrix_b[j]
 
             for k in range(n):
-                if (j!=k):
-                    next_solution[j] += (-1)*(matrix_a[j][k] * solution_zero[k])
+                if (j != k):
+                    next_solution[j] += (-1)*(matrix_a[j]
+                                              [k] * solution_zero[k])
 
             next_solution[j] /= matrix_a[j][j]
 
         for z in range(n):
-            numerator   += (next_solution[z]-solution_zero[z])**2
+            numerator += (next_solution[z]-solution_zero[z])**2
             denominator += next_solution[z]**2
 
         residue = float(numerator**0.5)/(denominator**0.5)
 
         for i in range(len(next_solution)):
             solution_zero[i] = next_solution[i]
-        step+=1
+        step += 1
 
-    print("x1: "              , next_solution)
-    print("residue: "         , residue      )
-    print("iteration_number: ", step         )
+    print("x1: ", next_solution)
+    print("residue: ", residue)
+    print("iteration_number: ", step)
 
 
 def gauss_seidel(matrix_a, matrix_b):
-    if (not Matrix_Utils.converge(matrix_a)):
+    if (not converge(matrix_a)):
         return "Error"
 
     n = len(matrix_a)
@@ -123,23 +123,26 @@ def gauss_seidel(matrix_a, matrix_b):
     solution_zero = [1.0 for i in range(n)]
     next_solution = [0.0 for i in range(n)]
 
-    tol     = 10**(-5)
+    tol = 10**(-5)
     residue = 1
-    step    = 0
+    step = 0
 
     while (residue > tol):
-        numerator        = 0
-        denominator      = 0
+        numerator = 0
+        denominator = 0
         second_summation = 0
         second_summation = 0
 
         for j in range(n):
-            first_summation  = Matrix_Utils.sum_of_vector_multiplication(matrix_a[j][:j], next_solution[:j])
-            second_summation = Matrix_Utils.sum_of_vector_multiplication(matrix_a[j][j+1:], solution_zero[j+1:])
-            next_solution[j] = (matrix_b[j] - first_summation - second_summation)/matrix_a[j][j]
+            first_summation = vector_multiplication(
+                matrix_a[j][:j], next_solution[:j])
+            second_summation = vector_multiplication(
+                matrix_a[j][j+1:], solution_zero[j+1:])
+            next_solution[j] = (matrix_b[j] - first_summation -
+                                second_summation)/matrix_a[j][j]
 
         for z in range(n):
-            numerator   += (next_solution[z] - solution_zero[z])**2
+            numerator += (next_solution[z] - solution_zero[z])**2
             denominator += next_solution[z]**2
 
         residue = float(numerator**0.5)/(denominator**0.5)
@@ -149,6 +152,6 @@ def gauss_seidel(matrix_a, matrix_b):
 
         step += 1
 
-    print("x1: "              , next_solution)
-    print("residue: "         , residue      )
-    print("iteration_number: ", step         )
+    print("x1: ", next_solution)
+    print("residue: ", residue)
+    print("iteration_number: ", step)
