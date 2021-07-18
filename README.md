@@ -2,7 +2,7 @@
 
 A simple library constructed using Python 3 and some other libraries made by Bruno Dantas.
 
-## Table of Contents:
+## Table of Contents
 - [How to use](#how-to-use)
 - [Matrix utils](#matrix-utils)
 - [Functions](#functions)
@@ -41,5 +41,5 @@ Below you can see all the functions covered by this library:
 - [Backward Richard Extrapolation](https://github.com/DantasB/Algebra-Linear-Computacional/blob/master/src/list_7/alc_list7.py#L19)
 - [Central Richard Extrapolation](https://github.com/DantasB/Algebra-Linear-Computacional/blob/master/src/list_7/alc_list7.py#L30)
 
-## Case Studies:
+## Case Studies
 All the case studies pdf's are in every folder named as Lista de Exercícios... 
